@@ -1,12 +1,6 @@
-'''
-literature : http://archive.oreilly.com/oreillyschool/courses/Python3/Python3-08.html
-
-'''
-
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import sys
 import struct
 
 raw = open("e07_002_001_0100.adc","rb")
@@ -25,10 +19,13 @@ raw.close()
 values=values.reshape(3628,7)
 print(values.shape)
 
+#sabbai 7 otai graph c maa aaune raixa...sahi laagyo yo kura...
 fig,c=plt.subplots(7,1)
+
+#naam ko laagi matra
 columns=['CHANNEL_1','CHANNEL_2','CHANNEL_3','CHANNEL_4','CHANNEL_5','CHANNEL_6','MARKER']
 
-
+#a function to setup graphs of all seven channels
 def showGraph():
 	for i in range(7):
 		c[i].plot(values[:,i])
