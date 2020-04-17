@@ -18,14 +18,24 @@ class SignalFeature:
 	coefficient(self,coff="filterbank",nfilt = 40, plot = False, spectrum = False):
 		coefficient of the selected feature i.e."filterbank" or "MFCC"
 	'''
-	def __init__(self, filename, timeframe, preEmphasis = 0.97, frameSize = 0.025, frameStride = 0.01, NFFT = 512):
+	def __init__(self, data, timeframe,sampleRate = 16000, preEmphasis = 0.97, frameSize = 0.025, frameStride = 0.01, NFFT = 512):
 		'''
 		Parameters
 		------------------------------------------
-		filename 	: str
-			full name of the wave file
+		data 	: str or list
+			if data = str
+				full name of the .wav file
+			elif data = list
+				list of a single channel and pass manual sampleRate
+				sampleRate = 16000 (default)
+		
 		timeframe	: int
-		first amount of timeframe in seconds of the passed file"
+			first amount of timeframe in seconds of the passed file"
+		
+		sampleRate	: int
+			sampling rate of the signal, need to specify for only list data
+			i.e. values from .adc file (but only one channel)	
+	
 		pre-emphasis: int (= 0.97 (default)) 
 			apply a pre-emphasis on the signal to amplify the high frequecy.
 			A pre-emphasis filter is useful in several ways: 
@@ -33,17 +43,28 @@ class SignalFeature:
 				(2) avoid numerical problems during the Fourier transform operation 
 				(3) may also improve the Signal-to-Noise Ratio (SNR)."
 			pre-emphasis = 0.97 (default) . as typical values for the filter coefficient are 0.95 or 0.97
+		
 		frameSize 	: int (= 0.025 (default))
 			size of frame. Typical frame sizes in speech processing range from 20 ms to 40 ms with 50% (+/-10%) overlap between consecutive frames
+		
 		frameStride	: int (= 0.01 (default))
 			frame stride . usually taken as 10ms stride 
+		
 		NFFT		: int (= 512 (default))
 			N -point FFT on each frame to calculate the frequency spectrum, which is also called Short-Time Fourier-Transform (STFT),
 			where N is typically 256 or 512
 		'''
+		
 		self.timeframe = timeframe
-		sampleRate, signal = scipy.io.wavfile.read(filename)
-		signal = signal[0:int(timeframe * sampleRate)] #keep the first amount of timeframe (seconds)
+		if type(data) == str: #use this only and not values
+			sampleRate, signal = scipy.io.wavfile.read(data)
+			signal = signal[0:int(timeframe * sampleRate)] #keep the first amount of timeframe (seconds)
+		
+		#while using the values set sampleRate manually...
+		elif type(data) == list:#when using value do not pass file name
+			signal = np.array(data)
+			signal = signal[0:int(timeframe*sampleRate)]
+
 		self.sampleRate = sampleRate
 		self.signal = signal
 		self.NFFT = NFFT
@@ -140,7 +161,7 @@ class SignalFeature:
 		if plot == True:
 			X_grid = np.arange(0, self.timeframe, self.timeframe/len(self.signal))
 			X_grid = X_grid.reshape((len(X_grid), 1))
-			print(X_grid.size)
+			# print(X_grid.size)
 			self.emphasizedSignal = self.emphasizedSignal.reshape((len(self.emphasizedSignal),1 ))
 			
 			if X_grid.size != self.emphasizedSignal.size :
@@ -149,7 +170,6 @@ class SignalFeature:
 				X_grid = X_grid.reshape((len(X_grid), 1))
 
 			plt.plot(X_grid, self.emphasizedSignal, color = 'red')
-			# plt.plot(X_grid, regressor.predict(X_grid), color = 'blue')
 			plt.title('Signal ')
 			plt.xlabel('time')
 			plt.ylabel('adc')

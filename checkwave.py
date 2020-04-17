@@ -19,10 +19,17 @@ from cepstralCoeff import SignalFeature
 file_name = "OSR_us_000_0010_8k.wav"
 
 #usage of the cepstralCoeff
+f = SignalFeature(data= file_name, timeframe = 3.5)
+x= f.coefficient(coff = "MFCC", plot = True, spectrum = True)
 
 
-f = SignalFeature(filename= file_name, timeframe = 3.5)
 
+#usage of the read ADC and passing to the SignalFeature
+from readADC_file import ADC2arr
+file = "e07_002_001_0100.adc"
+val = ADC2arr(file)
+f = SignalFeature(data= val[0][:], timeframe = 3.5,sampleRate= 600)
 x= f.coefficient(coff = "filterbank", plot = True, spectrum = True)
+
 
 # plt.show()
