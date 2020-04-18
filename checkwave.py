@@ -28,7 +28,7 @@ x= f.coefficient(coff = "MFCC", plot = True, spectrum = True)
 from readADC_file import ADC2arr
 file = "e07_002_001_0100.adc"
 val = ADC2arr(file)
-f = SignalFeature(data= val[0][:], timeframe = 3.5,sampleRate= 600)
+f = SignalFeature(data= val[0][:], timeframe = 1,sampleRate= 600)
 x= f.coefficient(coff = "filterbank", plot = True, spectrum = True)
 
 
