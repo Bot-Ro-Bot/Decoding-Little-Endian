@@ -31,5 +31,4 @@ val = ADC2arr(file)
 f = SignalFeature(data= val[0][:], timeframe = 3.5,sampleRate= 600)
 x= f.coefficient(coff = "filterbank", plot = True, spectrum = True)
 
-
 # plt.show()

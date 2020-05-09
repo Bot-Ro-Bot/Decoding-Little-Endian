@@ -30,7 +30,6 @@ def showGraph():
 	for i in range(7):
 		c[i].plot(values[:,i])
 		c[i].set_title(columns[i],size=8)
-
 showGraph()
 plt.show()
 
