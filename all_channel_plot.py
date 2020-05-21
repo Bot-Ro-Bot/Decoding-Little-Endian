@@ -28,7 +28,7 @@ columns=['CHANNEL_1','CHANNEL_2','CHANNEL_3','CHANNEL_4','CHANNEL_5','CHANNEL_6'
 #a function to setup graphs of all seven channels
 def showGraph():
 	for i in range(7):
-		c[i].plot(values[:,i])
+		c[i].plot(values[:600,i])
 		c[i].set_title(columns[i],size=8)
 showGraph()
 plt.show()
