@@ -11,12 +11,12 @@ print(len(signal))
 #byte array huney raixa binary maa read garda ani tesaile aba 16 bit ko laagi 2 bytes huna paryo..bhanneley 50792/2=25396
 #small "<" chai little endian ko laagi ani h chai hex maa encoded bhayeko ley
 
-abc="h"*25396
+abc="h"*int(len(signal)/2)
 values=list(struct.unpack("<"+abc,signal))
 values=np.array(values)
 print(values.size)
 raw.close()
-values=values.reshape(3628,7)
+values=values.reshape(int(len(signal) / (2*7)),7)
 print(values.shape)
 
 #sabbai 7 otai graph c maa aaune raixa...sahi laagyo yo kura...
