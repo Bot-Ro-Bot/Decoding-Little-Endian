@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import struct
 
-raw = open("e07_002_001_0100.adc","rb")
+
+file_name ="e07_002_001_0100.adc" 
+
+raw = open(file_name,"rb")
 signal= (raw.read())
 print(type(signal))
 print(len(signal))
