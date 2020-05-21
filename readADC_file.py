@@ -13,14 +13,14 @@ def ADC2arr(filename):
 	----------------------------------------------
 	filename 	: str
 		full name of the .adc file
-
-
 	Returns
-	----------------------------------------------
-		list of values with rows = 7 and column int(len(signal)/(2*7)) 
+----------------------------------------------
+		list of values with rows = 7 and column int(len(signal)/(2*7))
 	'''
 	raw = open(filename,"rb")
 	signal = (raw.read())
+	print(len(signal))
+
 	'''
 	Note 
 	---------------------------------------------
@@ -34,16 +34,12 @@ def ADC2arr(filename):
 		no of columns for .adc file = int(len(signal)/(2*7)) 
 	- "<" chai little endian ko laagi ani h bhaneko chai hex coded bytes bhaneko
 	'''
-	cols = int(len(signal)/(2*7)) 	#no of cols  
-	rows = 7						#no of rows
-	values = [[0] * cols for i in range(rows)]
-	for i in range(cols):
-		for j in range(rows):
-			temp = ((i*7)+j)*2
-			signal_copy = signal[temp:temp+2]
-			values[j][i] = struct.unpack("<h",signal_copy)[0]
-			# print(values[j][i])
-	# print(len(values)
+#for different size of file ... 	
+	h_endian = 'h'*int(len(signal) / 2)
+	values = list(struct.unpack('<'+h_endian,signal))
+	values = np.array(values)
+	values = values.reshape(int(len(signal) / (2*7)),7)
+	values = values.T
 	raw.close()
 	return values
 
@@ -76,21 +72,12 @@ def ADC2arr(filename):
 # plt.plot(values)
 # plt.show()
 
-
-
-
 #reading the data from .adc file
 
-# file = "e07_002_001_0100.adc"
-# val = ADC2arr(file)
+file = "e07_002_001_0100.adc"
+val = ADC2arr(file)
 
-
-# #plotting data for channel 1
-# print(len(val[0][:]))
-# x_grid = np.arange(0,len(val[0][:]),step=1)
-# x_grid = x_grid.reshape((len(x_grid), 1))
-# plt.plot(x_grid, val[0][:], color="red")
-# plt.title('Signal')
-# plt.xlabel('time')
-# plt.ylabel('adc')
+# _,fig = plt.subplots(7,1)
+# for i in range(7):
+# 	fig[i].plot(val[i,:])
 # plt.show()
