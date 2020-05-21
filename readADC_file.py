@@ -34,6 +34,7 @@ def ADC2arr(filename):
 		no of columns for .adc file = int(len(signal)/(2*7)) 
 	- "<" chai little endian ko laagi ani h bhaneko chai hex coded bytes bhaneko
 	'''
+#for different size of file ... 	
 	h_endian = 'h'*int(len(signal) / 2)
 	values = list(struct.unpack('<'+h_endian,signal))
 	values = np.array(values)
